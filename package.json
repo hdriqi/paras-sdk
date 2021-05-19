@@ -1,0 +1,18 @@
+{
+  "name": "paras-sdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^9.0.2",
+    "form-data": "^4.0.0",
+    "js-base64": "^3.6.0",
+    "jsbi": "^3.1.4",
+    "near-api-js": "^0.39.0",
+    "querystring": "^0.2.1"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
