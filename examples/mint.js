@@ -37,9 +37,10 @@ const main = async () => {
 				supply: 5,
 				quantity: 0,
 				amount: 0,
-				name: 'Key #1',
+				name: 'Royalty X',
 				description: 'Key Description',
 				collection: 'Key',
+				royalty: 10
 			},
 			authToken
 		)

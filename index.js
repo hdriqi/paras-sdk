@@ -223,6 +223,7 @@ class ParasSDK {
 		formData.append('name', params.name)
 		formData.append('description', params.description)
 		formData.append('collection', params.collection)
+		formData.append('royalty', params.royalty)
 		try {
 			const resp = await axios.post(`${this.config.apiUrl}/tokens`, formData, {
 				headers: {
