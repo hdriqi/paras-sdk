@@ -54,6 +54,7 @@ class ParasSDK {
 					'updateMarketData',
 					'deleteMarketData',
 					'transferFrom',
+					'burn'
 				],
 			}
 		)
@@ -124,8 +125,8 @@ class ParasSDK {
 				account.account_id,
 				accountkeyPair
 			)
-			this.contract = await this._initContract(account.account_id)
 			this.account = await this.connection.account(account.account_id)
+			this.contract = await this._initContract(account.account_id)
 		} else {
 			this.wallet.requestSignIn(this.config.contractName, this.config.appName)
 		}
@@ -223,7 +224,9 @@ class ParasSDK {
 		formData.append('name', params.name)
 		formData.append('description', params.description)
 		formData.append('collection', params.collection)
-		formData.append('royalty', params.royalty)
+		params.royalty ? formData.append('royalty', params.royalty) : null
+		params.categoryId ? formData.append('categoryId', params.categoryId) : null
+
 		try {
 			const resp = await axios.post(`${this.config.apiUrl}/tokens`, formData, {
 				headers: {
@@ -234,6 +237,24 @@ class ParasSDK {
 			return resp.data
 		} catch (err) {
 			console.log(err.response)
+			throw new Error(err)
+		}
+	}
+
+	async burn(params) {
+		if (!this.contract) {
+			throw new Error('ParasSDK: Contract has not been initialized')
+		}
+		try {
+			const formattedParams = {
+				accountId: params.accountId,
+				tokenId: params.tokenId,
+				quantity: params.quantity.toString(),
+			}
+
+			await this.contract.burn(formattedParams)
+			return formattedParams
+		} catch (err) {
 			throw new Error(err)
 		}
 	}
