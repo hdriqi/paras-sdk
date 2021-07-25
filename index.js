@@ -292,6 +292,37 @@ class ParasSDK {
 			throw new Error(err)
 		}
 	}
+
+	async getActivity(query, skip = 0, limit = 10, sort = 'updatedAt_-1') {
+		// const query = {
+		//	_id: id,
+		//	tokenId: tokenId,
+		//	creatorId: creatorId,
+		//	from: from,
+		//	to: to,
+		//	type: type,
+		//	minPrice: minPrice,
+		//	maxPrice: maxPrice,
+		// }
+		// const skip = parseInt(__skip) || 0
+		// const limit = Math.min(parseInt(__limit), 10) || 10
+		// const sort = __sort
+
+		const qs = querystring.stringify({
+			...query,
+			...{ __skip: skip },
+			...{ __limit: limit },
+			...{ __sort: sort },
+		})
+
+		try {
+			const resp = await axios.get(`${this.config.apiUrl}/activities?${qs}`)
+			return resp.data.data
+		} catch (err) {
+			console.log(err.response)
+			throw new Error(err)
+		}
+	}
 }
 
 module.exports = ParasSDK
