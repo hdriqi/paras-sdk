@@ -49,7 +49,7 @@ const main = async () => {
 		console.log(newToken)
 
         const query = {
-            tokenId: "bafybeidokutfn2raqrsa5z6sx6bhafib2slserifseagl7ftjpmwcuyekq"
+            tokenId: newToken["data"]["tokenId"]
         }
         const res = await parasSDK.getTokens(query, 0, 1)
         console.log(res)
