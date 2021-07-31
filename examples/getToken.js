@@ -19,14 +19,6 @@ const main = async () => {
 		}
 	)
 
-	const cred = {
-		account_id: process.env.ROOT_ACCOUNT_ID,
-		public_key: process.env.ROOT_PUBLIC_KEY,
-		private_key: process.env.ROOT_PRIVATE_KEY,
-	}
-
-	await parasSDK.login(cred)
-
 	try {
 		// possible query
 		// const query = {
