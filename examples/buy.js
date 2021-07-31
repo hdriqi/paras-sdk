@@ -25,13 +25,11 @@ const main = async () => {
     }
 
     await parasSDK.login(cred)
-    this.authToken = await parasSDK.authToken()
-    this.accountId = cred.account_id
 
 	try {
 		const res = await parasSDK.buy(
 			{
-				ownerId: this.accountId,
+				ownerId: cred.account_id,
 				tokenId: "bafybeihyvmlz4yanombe2eb7aepcq77zr4dvbilzlagx66jotmdz34ngoe",
 				quantity: 1,
 				payment: 1,

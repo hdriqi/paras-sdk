@@ -26,7 +26,6 @@ const main = async () => {
     }
 
     await parasSDK.login(cred)
-    this.authToken = await parasSDK.authToken()
 
 	try {
         const res = await parasSDK.addBid(
