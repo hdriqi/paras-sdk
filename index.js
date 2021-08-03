@@ -54,7 +54,11 @@ class ParasSDK {
 					'updateMarketData',
 					'deleteMarketData',
 					'transferFrom',
-					'burn'
+					'burn',
+					'getBidMarketData',
+					'addBidMarketData',
+					'acceptBidMarketData',
+					'deleteBidMarketData'
 				],
 			}
 		)
@@ -293,7 +297,7 @@ class ParasSDK {
 		}
 	}
 
-	async getActivity(query, skip = 0, limit = 10, sort = 'updatedAt_-1') {
+	async getActivity(query, skip = 0, limit = 10) {
 		// const query = {
 		//	_id: id,
 		//	tokenId: tokenId,
@@ -306,13 +310,11 @@ class ParasSDK {
 		// }
 		// const skip = parseInt(__skip) || 0
 		// const limit = Math.min(parseInt(__limit), 10) || 10
-		// const sort = __sort
 
 		const qs = querystring.stringify({
 			...query,
 			...{ __skip: skip },
 			...{ __limit: limit },
-			...{ __sort: sort },
 		})
 
 		try {
@@ -320,6 +322,84 @@ class ParasSDK {
 			return resp.data.data
 		} catch (err) {
 			console.log(err.response)
+			throw new Error(err)
+		}
+	}
+
+	async getBid(query, skip = 0, limit = 10) {
+		// const query = {
+		//	tokenId: tokenId,
+		//	accountId: accountId,
+		//	isReceived: isReceived,
+		// }
+		// const skip = parseInt(__skip) || 0
+		// const limit = Math.min(parseInt(__limit), 10) || 10
+
+		const qs = querystring.stringify({
+			...query,
+			...{ __skip: skip },
+			...{ __limit: limit },
+		})
+
+		try {
+			const resp = await axios.get(`${this.config.apiUrl}/bids?${qs}`)
+			return resp.data.data
+		} catch (err) {
+			console.log(err.response)
+			throw new Error(err)
+		}
+	}
+
+	async addBid(params) {
+		if (!this.contract) {
+			throw new Error('ParasSDK: Contract has not been initialized')
+		}
+		try {
+			const formattedParams = {
+				ownerId: params.accountId,
+				tokenId: params.tokenId,
+				quantity: params.quantity.toString(),
+				amount: params.amount.toString(),
+			}
+
+			await this.contract.addBidMarketData(formattedParams)
+			return formattedParams
+		} catch (err) {
+			throw new Error(err)
+		}
+	}
+
+	async acceptBid(params) {
+		if (!this.contract) {
+			throw new Error('ParasSDK: Contract has not been initialized')
+		}
+		try {
+			const formattedParams = {
+				ownerId: params.accountId,
+				tokenId: params.tokenId,
+				quantity: params.quantity.toString(),
+			}
+
+			await this.contract.acceptBidMarketData(formattedParams)
+			return formattedParams
+		} catch (err) {
+			throw new Error(err)
+		}
+	}
+
+	async deleteBid(params) {
+		if (!this.contract) {
+			throw new Error('ParasSDK: Contract has not been initialized')
+		}
+		try {
+			const formattedParams = {
+				ownerId: params.accountId,
+				tokenId: params.tokenId,
+			}
+
+			await this.contract.deleteBidMarketData(formattedParams)
+			return formattedParams
+		} catch (err) {
 			throw new Error(err)
 		}
 	}
